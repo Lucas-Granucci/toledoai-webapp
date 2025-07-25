@@ -65,7 +65,7 @@ async function generatePDFFromHtml(htmlContent) {
 
 function convertMarkdownToHTML(markdownText) {
   // Convert markdown to HTML
-  const htmlContent = marked(fileText);
+  const htmlContent = marked(markdownText);
     
   return `
     <!DOCTYPE html>

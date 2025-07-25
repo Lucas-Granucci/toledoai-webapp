@@ -31,7 +31,7 @@ export const SettingsModal = ({
             <div className="mb-6">
                 <h3 className="text-lg font-semibold text-slate-800 mb-4">Language</h3>
 
-                <div className="space-y-4">
+                <div className="space-y-4 mb-4">
                     <Select 
                         label="Source Language"
                         options={sourceOptions}

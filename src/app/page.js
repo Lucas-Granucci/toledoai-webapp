@@ -11,7 +11,10 @@ import {
   GraduationCap,
   Building2,
   CheckCircle,
-  ArrowRight
+  ArrowRight,
+  Github,
+  Linkedin,
+  Mail
 } from 'lucide-react';
 
 // Reusable Components
@@ -44,7 +47,9 @@ const NavLink = ({ href, children }) => {
     e.preventDefault();
     const target = document.querySelector(href);
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+      const headerHeight = 80; // Approximate header height
+      const targetPosition = target.offsetTop - headerHeight;
+      window.scrollTo({ top: targetPosition, behavior: 'smooth' });
     }
   };
 
@@ -87,6 +92,43 @@ const StatDisplay = ({ number, description, source }) => (
   </div>
 );
 
+const DeveloperCard = ({ initials, name, role, description, github, linkedin, email }) => (
+  <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
+    <div className="flex flex-col md:flex-row items-center gap-4">
+      <div className="flex-shrink-0">
+        <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-full flex items-center justify-center">
+          <span className="text-white text-lg font-bold">{initials}</span>
+        </div>
+      </div>
+      
+      <div className="text-center md:text-left flex-1">
+        <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
+          <h3 className="text-lg font-bold text-slate-900">{name}</h3>
+          <div className="flex gap-2">
+            {github && (
+              <a href={github} className="text-slate-400 hover:text-slate-600 transition-colors">
+                <Github className="w-4 h-4" />
+              </a>
+            )}
+            {linkedin && (
+              <a href={linkedin} className="text-slate-400 hover:text-slate-600 transition-colors">
+                <Linkedin className="w-4 h-4" />
+              </a>
+            )}
+            {email && (
+              <a href={`mailto:${email}`} className="text-slate-400 hover:text-slate-600 transition-colors">
+                <Mail className="w-4 h-4" />
+              </a>
+            )}
+          </div>
+        </div>
+        <p className="text-cyan-600 font-medium mb-2">{role}</p>
+        <p className="text-slate-600 text-sm">{description}</p>
+      </div>
+    </div>
+  </div>
+);
+
 const SolutionCard = ({ title, description }) => (
   <div>
     <h3 className="text-2xl font-bold text-slate-800 mb-3">{title}</h3>
@@ -99,6 +141,27 @@ const SolutionCard = ({ title, description }) => (
 // Main Component
 export default function Home() {
   const router = useRouter();
+
+  const developers = [
+    {
+      initials: 'YI',
+      name: 'Your Name',
+      role: 'AI Engineer & Researcher',
+      description: 'Specializes in NLP and machine translation systems for scientific content.',
+      github: 'https://github.com/yourusername',
+      linkedin: 'https://linkedin.com/in/yourprofile',
+      email: 'your.email@example.com'
+    },
+    {
+      initials: 'CO',
+      name: 'Co-Developer Name',
+      role: 'Full-Stack Developer',
+      description: 'Focuses on user experience and building scalable web applications.',
+      github: 'https://github.com/codevusername',
+      linkedin: 'https://linkedin.com/in/codevprofile',
+      email: 'codev.email@example.com'
+    }
+  ];
 
   const goToChatbot = () => {
     router.push('/chatbot');
@@ -152,8 +215,8 @@ export default function Home() {
             <NavLink href="#problem">The Problem</NavLink>
             <NavLink href="#solution">Our Solution</NavLink>
             <NavLink href="#audience">Audience</NavLink>
-            <NavLink href="#about">About</NavLink>
             <NavLink href="#features">Features</NavLink>
+            <NavLink href="#about">About</NavLink>
           </div>
           <Button onClick={goToChatbot} className="hidden md:inline-flex">
             Launch App
@@ -301,96 +364,15 @@ export default function Home() {
         </section>
 
         {/* About the Developer Section */}
-        <section id="about" className="py-20 md:py-28 bg-slate-50">
+        <section id="about" className="py-16 bg-slate-50">
           <div className="container mx-auto px-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">About the Developer</h2>
-                <p className="text-lg text-slate-600">
-                  Meet the mind behind ToledoAI's mission to democratize scientific knowledge
-                </p>
-              </div>
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8">About the Developers</h2>
               
-              <div className="bg-white rounded-xl p-8 md:p-12 shadow-lg border border-slate-200">
-                <div className="grid md:grid-cols-3 gap-8 items-center">
-                  <div className="md:col-span-1 text-center">
-                    <div className="w-32 h-32 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                      <span className="text-white text-4xl font-bold">YI</span>
-                    </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">Your Name</h3>
-                    <p className="text-cyan-600 font-medium">AI Engineer & Researcher</p>
-                  </div>
-                  
-                  <div className="md:col-span-2">
-                    <div className="prose prose-slate max-w-none">
-                      <p className="text-slate-600 leading-relaxed mb-4">
-                        As a passionate AI engineer with a deep interest in natural language processing and 
-                        machine translation, I recognized the critical gap in accessibility of scientific 
-                        literature across different languages and cultures.
-                      </p>
-                      <p className="text-slate-600 leading-relaxed mb-4">
-                        Having witnessed firsthand how language barriers can limit scientific collaboration 
-                        and knowledge sharing, I built ToledoAI to bridge this divide. The platform combines 
-                        cutting-edge machine learning techniques with domain-specific knowledge to provide 
-                        accurate, contextual translations for academic and research content.
-                      </p>
-                      <p className="text-slate-600 leading-relaxed">
-                        My goal is to ensure that groundbreaking research and scientific discoveries can be 
-                        accessed by anyone, regardless of their native language, fostering a truly global 
-                        scientific community.
-                      </p>
-                    </div>
-                    
-                    <div className="mt-6 flex flex-wrap gap-3">
-                      <span className="bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full text-sm font-medium">
-                        Machine Learning
-                      </span>
-                      <span className="bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full text-sm font-medium">
-                        NLP
-                      </span>
-                      <span className="bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full text-sm font-medium">
-                        Translation Systems
-                      </span>
-                      <span className="bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full text-sm font-medium">
-                        Scientific Computing
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="mt-8 pt-8 border-t border-slate-200">
-                  <div className="grid md:grid-cols-3 gap-6 text-center">
-                    <div>
-                      <div className="text-2xl font-bold text-cyan-600 mb-1">5+</div>
-                      <div className="text-sm text-slate-600">Years in AI/ML</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-cyan-600 mb-1">50+</div>
-                      <div className="text-sm text-slate-600">Languages Supported</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-cyan-600 mb-1">1000+</div>
-                      <div className="text-sm text-slate-600">Documents Translated</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="text-center mt-8">
-                <p className="text-slate-600 mb-4">
-                  Interested in collaborating or have questions about the technology?
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button variant="secondary">
-                    View on GitHub
-                  </Button>
-                  <Button variant="secondary">
-                    Connect on LinkedIn
-                  </Button>
-                  <Button variant="secondary">
-                    Send Email
-                  </Button>
-                </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                {developers.map((developer, index) => (
+                  <DeveloperCard key={index} {...developer} />
+                ))}
               </div>
             </div>
           </div>

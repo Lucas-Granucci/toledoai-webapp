@@ -10,7 +10,7 @@ export const Modal = ({ isOpen, onClose, title, children, maxWidth = 'max-w-md',
                     <h2 className="text-cl font-semibold text-slate-900">{title}</h2>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+                        className="p-2 hover:bg-slate-100 rounded-full transition-colors cursor-pointer"
                     >
                         <X className="w-5 h-5 text-slate-500"/>
                     </button>
