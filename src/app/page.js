@@ -2,16 +2,12 @@
 
 import { useRouter } from 'next/navigation';
 import { 
-  FileText, 
-  Globe, 
   MessageSquare, 
   Upload,
   Languages,
   Users,
   GraduationCap,
   Building2,
-  CheckCircle,
-  ArrowRight,
   Github,
   Linkedin,
   Mail
@@ -106,12 +102,12 @@ const DeveloperCard = ({ initials, name, role, description, github, linkedin, em
           <h3 className="text-lg font-bold text-slate-900">{name}</h3>
           <div className="flex gap-2">
             {github && (
-              <a href={github} className="text-slate-400 hover:text-slate-600 transition-colors">
+              <a href={github} target="_blank" className="text-slate-400 hover:text-slate-600 transition-colors">
                 <Github className="w-4 h-4" />
               </a>
             )}
             {linkedin && (
-              <a href={linkedin} className="text-slate-400 hover:text-slate-600 transition-colors">
+              <a href={linkedin} target="_blank" className="text-slate-400 hover:text-slate-600 transition-colors">
                 <Linkedin className="w-4 h-4" />
               </a>
             )}
@@ -144,17 +140,17 @@ export default function Home() {
 
   const developers = [
     {
-      initials: 'YI',
-      name: 'Your Name',
+      initials: 'LG',
+      name: 'Lucas Granucci',
       role: 'AI Engineer & Researcher',
       description: 'Specializes in NLP and machine translation systems for scientific content.',
-      github: 'https://github.com/yourusername',
-      linkedin: 'https://linkedin.com/in/yourprofile',
-      email: 'your.email@example.com'
+      github: 'https://github.com/Lucas-Granucci',
+      linkedin: 'https://www.linkedin.com/in/lucas-granucci/',
+      email: 'lucasgranucci08@gmail.com'
     },
     {
       initials: 'CO',
-      name: 'Co-Developer Name',
+      name: 'Thomas Du',
       role: 'Full-Stack Developer',
       description: 'Focuses on user experience and building scalable web applications.',
       github: 'https://github.com/codevusername',
