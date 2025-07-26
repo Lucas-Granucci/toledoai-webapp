@@ -4,7 +4,7 @@ export class MessageProcessor {
 
         // Keep first message (system message)
         const systemMessages = messages.filter(m => m.role === 'system');
-        const nonSystemMessages = messages.filert(m => m.role !== 'system');
+        const nonSystemMessages = messages.filter(m => m.role !== 'system');
 
         const recentMessages = nonSystemMessages.slice(-maxMessages);
         return [...systemMessages, ...recentMessages];
