@@ -1,9 +1,4 @@
-export const runtime = 'nodejs';
-
-const pdf = require('pdf-parse');
-
-
-// import pdf from 'pdf-parse';
+import pdf from 'pdf-parse';
 import { NextResponse } from 'next/server';
 import TurndownService from 'turndown';
 
