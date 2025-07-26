@@ -1,13 +1,6 @@
 import { NextResponse } from 'next/server';
-import { PDFDocument } from 'pdf-lib';
 import pdf from 'pdf-parse';
 import TurndownService from 'turndown';
-
-async function repairPDF(buffer) {
-  const pdfDoc = await PDFDocument.load(buffer, { ignoreEncryption: true });
-  const newPDF = await pdfDoc.save();
-  return Buffer.from(newPDF);
-}
 
 export async function POST(request) {
   try {
@@ -23,9 +16,8 @@ export async function POST(request) {
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const repairedBuffer = await repairPDF(buffer)
-
-    const data = await pdf(repairedBuffer);
+    
+    const data = await pdf(buffer);
     const turndown = new TurndownService({
       headingStyle: 'atx',
       codeBlockStyle: 'fenced'
