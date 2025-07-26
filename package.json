@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "canvas": "^3.1.2",
     "fs": "^0.0.1-security",
     "groq-sdk": "^0.29.0",
     "lucide-react": "^0.525.0",
