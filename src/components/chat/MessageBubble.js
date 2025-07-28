@@ -42,6 +42,26 @@ export const MessageBubble = ({ message, onFilePreview }) => {
                             <span className="font-medium">{message.file.name}</span>
                         </div>
                     )}
+
+                    {/* Glossary Section for this assistant message */}
+                    {!isUser && message.glossary && typeof message.glossary === 'object' && (
+                        <div className="mb-4 mt-2 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
+                        <h2 className="text-lg font-bold mb-2 text-yellow-700">Glossary</h2>
+                        <ul className="text-yellow-900">
+                            {Object.entries(message.glossary).map(([term, definition]) => (
+                            <li key={term} className="mb-1">
+                                <strong>{term}:</strong> {definition}
+                            </li>
+                            ))}
+                        </ul>
+                        </div>
+                    )}
+                    {!isUser && message.glossary && typeof message.glossary === 'string' && (
+                        <div className="mb-4 mt-2 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
+                        <h2 className="text-lg font-bold mb-2 text-yellow-700">Glossary</h2>
+                        <pre className="whitespace-pre-wrap text-yellow-900">{m.glossary}</pre>
+                        </div>
+                    )}
                     </div>
                 </div>
             </div>

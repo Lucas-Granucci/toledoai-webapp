@@ -2,11 +2,13 @@ import { NextResponse } from "next/server";
 import { ChatService } from '../../../services/ai/chatService';
 import { DocumentManager } from '../../../services/ai/documentManager';
 import { TranslationService } from '../../../services/ai/translationService';
+import { GloassaryService } from "@/services/ai/GlossaryService";
 import { MessageProcessor } from '../../../utils/messageProcessor';
 import { toolsSchema } from '../../../tools/schemas.js';
 
 // Initialize services
 const chatService = new ChatService();
+const glossaryService = new GloassaryService();
 const documentManager = new DocumentManager();
 const translationService = new TranslationService();
 const messageProcessor = new MessageProcessor();
@@ -92,8 +94,11 @@ async function handleTranslationTool(toolCall, documentText, userApiKey) {
         userApiKey
     );
 
+    const glossary = await glossaryService.generateGlossary(translatedText, userApiKey, targetLang, "English");
+
     return {
         response: "Translation completed! The translated document is ready for download.",
+        glossary: glossary,
         file: {
             text: translatedText,
             name: `translated_${targetLang}.txt`,

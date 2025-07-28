@@ -53,6 +53,7 @@ export const useChat = () => {
             const assistantReply = {
                 role: 'assistant',
                 content: response.response,
+                glossary: response.glossary || '',
                 file: response.file
             };
 
