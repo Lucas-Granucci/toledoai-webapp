@@ -22,7 +22,7 @@ export const SettingsModal = ({
                 <textarea 
                     value={apiKey}
                     onChange={(e) => setApiKey(e.target.value)}
-                    placeholder='Paste your OpenAI / GroqCloud API key here'
+                    placeholder='Paste your GroqCloud API key here'
                     className="w-full h-24 p-3 border border-slate-200 rounded-xl resize-none text-slate-800 focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                 />
             </div>

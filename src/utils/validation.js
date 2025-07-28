@@ -1,15 +1,4 @@
 export class ValidationUtils {
-    static validateApiKey(apiKey) {
-        if (!apiKey || apiKey.trim().length === 0) {
-            throw new Error('API key is required');
-        }
-
-        if (apiKey.length < 10) {
-            throw new Error('Invalid API key format');
-        }
-        
-        return true;
-    }
 
     static validateFileSize(file, maxSizeInMB = 25) {
         const maxSize = maxSizeInMB * 1024 * 1024;

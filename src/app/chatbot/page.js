@@ -46,7 +46,7 @@ export default function ChatbotPage() {
 
     // Event handlers
     const handleSendMessage = async () => {
-        if (!validateApiKey) return;
+        if (!validateApiKey()) return;
 
         try {
             await sendMessage(apiKey, uploadedFile, targetLang);

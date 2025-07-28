@@ -1,6 +1,6 @@
 import Groq from 'groq-sdk';
 
-export class GloassaryService {
+export class GlossaryService {
     async generateGlossary(translatedText, userApiKey, targetLang, sourceLang) {
         const groq = new Groq({ apiKey: userApiKey });
         const prompt = `\nExtract all complex, technical, or domain-specific terms from the following text (in ${targetLang}). \

@@ -2,13 +2,13 @@ import { NextResponse } from "next/server";
 import { ChatService } from '../../../services/ai/chatService';
 import { DocumentManager } from '../../../services/ai/documentManager';
 import { TranslationService } from '../../../services/ai/translationService';
-import { GloassaryService } from "@/services/ai/GlossaryService";
+import { GlossaryService } from "@/services/ai/GlossaryService";
 import { MessageProcessor } from '../../../utils/messageProcessor';
 import { toolsSchema } from '../../../tools/schemas.js';
 
 // Initialize services
 const chatService = new ChatService();
-const glossaryService = new GloassaryService();
+const glossaryService = new GlossaryService();
 const documentManager = new DocumentManager();
 const translationService = new TranslationService();
 const messageProcessor = new MessageProcessor();
