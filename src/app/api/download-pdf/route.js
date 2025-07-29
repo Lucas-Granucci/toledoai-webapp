@@ -1,28 +1,56 @@
 import { NextResponse } from 'next/server';
-import puppeteer from 'puppeteer';
 import { marked } from 'marked';
 
 export async function POST(request) {
+  let browser;
+
   try {
-    // Parse JSON body instead of FormData
     const { text: fileText } = await request.json();
 
     if (!fileText) {
-      return NextResponse.json(
-        { error: 'No text provided' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'No text provided' }, { status: 400 });
     }
 
-    const fullHtml = convertMarkdownToHTML(fileText);
-    const pdfBuffer = await generatePDFFromHtml(fullHtml);
+    const html = convertMarkdownToHTML(fileText);
 
-    // Return PDF as response
+    // Determine deployment environment
+    const isVercel = !!process.env.VERCEL_ENV;
+    let puppeteer;
+    let launchOptions = {
+      headless: true,
+    };
+
+    if (isVercel) {
+      const chromium = (await import('@sparticuz/chromium')).default;
+      puppeteer = await import('puppeteer-core');
+      launchOptions = {
+        ...launchOptions,
+        args: chromium.args,
+        executablePath: await chromium.executablePath(),
+        defaultViewport: chromium.defaultViewport,
+        headless: chromium.headless,
+        ignoreHTTPSErrors: true,
+      };
+    } else {
+      puppeteer = await import('puppeteer');
+    }
+
+    browser = await puppeteer.launch(launchOptions);
+    const page = await browser.newPage();
+
+    await page.setContent(html, { waitUntil: 'networkidle0' });
+
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      margin: { top: '10mm', right: '10mm', bottom: '10mm', left: '10mm' },
+      printBackground: true,
+    });
+
     return new NextResponse(pdfBuffer, {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename="document.pdf"'
-      }
+        'Content-Disposition': 'attachment; filename="document.pdf"',
+      },
     });
 
   } catch (error) {
@@ -31,42 +59,15 @@ export async function POST(request) {
       { error: 'Failed to generate PDF', details: error.message },
       { status: 500 }
     );
+  } finally {
+    if (browser) {
+      await browser.close();
+    }
   }
 }
 
-async function generatePDFFromHtml(htmlContent) {
-  // Launch Puppeteer
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-
-    try {
-      const page = await browser.newPage();
-      await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
-
-      // Generate PDF
-      const pdfBuffer = await page.pdf({
-        format: 'A4',
-        margin: {
-          top: '10mm',
-          right: '10mm',
-          bottom: '10mm',
-          left: '10mm'
-        },
-        printBackground: true
-      });
-
-      return pdfBuffer;
-    } finally {
-      await browser.close();
-    }
-}
-
 function convertMarkdownToHTML(markdownText) {
-  // Convert markdown to HTML
   const htmlContent = marked(markdownText);
-    
   return `
     <!DOCTYPE html>
     <html>
