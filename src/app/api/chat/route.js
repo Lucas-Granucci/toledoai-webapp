@@ -34,8 +34,10 @@ export async function POST(req) {
 
         // Prepare messages for LLM
         const trimmedMessages = messageProcessor.trimMessageHistory(messages, 10);
-        const currentUserMessage = messages[messages.length -  1]?.contet || '';
+        const currentUserMessage = messages[messages.length -  1]?.content || '';
+        console.log("CURRENT USER MESSAGE: ", currentUserMessage)
         const needsFullDocument = messageProcessor.shouldIncludeFullDocument(currentUserMessage);
+        console.log("NEEDS FULL DOCUMENT: ", needsFullDocument)
 
         const finalMessages = messageProcessor.prepareMessagesForLLM(
             trimmedMessages,
