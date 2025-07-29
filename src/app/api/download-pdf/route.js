@@ -11,9 +11,9 @@ export async function POST(request) {
       return NextResponse.json({ error: 'No text provided' }, { status: 400 });
     }
 
+    // ✅ Generate full styled HTML
     const html = convertMarkdownToHTML(fileText);
 
-    // Determine deployment environment
     const isVercel = !!process.env.VERCEL_ENV;
     let puppeteer;
     let launchOptions = {
@@ -27,9 +27,7 @@ export async function POST(request) {
         ...launchOptions,
         args: chromium.args,
         executablePath: await chromium.executablePath(),
-        // defaultViewport: chromium.defaultViewport,
-        // headless: chromium.headless,
-        // ignoreHTTPSErrors: true,
+        defaultViewport: { width: 1200, height: 800 }, // ✅ Set a stable viewport
       };
     } else {
       puppeteer = await import('puppeteer');
@@ -38,18 +36,22 @@ export async function POST(request) {
     browser = await puppeteer.launch(launchOptions);
     const page = await browser.newPage();
 
-    await page.setContent(html, { waitUntil: 'networkidle0' });
+    // ✅ More robust content loading
+    await page.setContent(html, { waitUntil: 'domcontentloaded' });
 
+    // ✅ Generate PDF
     const pdfBuffer = await page.pdf({
       format: 'A4',
       margin: { top: '10mm', right: '10mm', bottom: '10mm', left: '10mm' },
       printBackground: true,
     });
 
+    // ✅ Proper binary response headers
     return new NextResponse(pdfBuffer, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': 'attachment; filename="document.pdf"',
+        'Content-Length': pdfBuffer.length.toString(),
       },
     });
 
@@ -66,46 +68,49 @@ export async function POST(request) {
   }
 }
 
-function convertMarkdownToHTML(markdownText) {
-  const htmlContent = marked(markdownText);
+// ✅ Function to convert Markdown to full HTML with embedded styles
+function convertMarkdownToHTML(markdown) {
+  const content = marked.parse(markdown);
+
   return `
-    <!DOCTYPE html>
     <html>
       <head>
-        <meta charset="utf-8">
+        <meta charset="UTF-8" />
         <style>
           body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+                         Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            padding: 40px;
             line-height: 1.6;
+            font-size: 16px;
             color: #333;
-            max-width: 210mm;
-            margin: 0 auto;
-            padding: 20px;
           }
-          h1, h2, h3 { 
-            color: #2c3e50; 
-            margin-top: 20px;
-            margin-bottom: 10px;
+          h1, h2, h3, h4, h5, h6 {
+            font-weight: bold;
+            margin-top: 1.5em;
           }
-          p { margin-bottom: 10px; }
-          code { 
-            background-color: #f4f4f4; 
-            padding: 2px 4px; 
-            border-radius: 3px;
+          p {
+            margin: 1em 0;
           }
-          pre { 
-            background-color: #f4f4f4; 
-            padding: 10px; 
+          ul, ol {
+            margin: 1em 0;
+            padding-left: 2em;
+          }
+          pre {
+            background: #f4f4f4;
+            padding: 1em;
             overflow-x: auto;
-            border-radius: 5px;
           }
-          ul, ol { margin-bottom: 15px; }
-          li { margin-bottom: 5px; }
+          code {
+            font-family: monospace;
+            background: #f4f4f4;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+          }
         </style>
       </head>
       <body>
-        ${htmlContent}
+        ${content}
       </body>
     </html>
   `;
