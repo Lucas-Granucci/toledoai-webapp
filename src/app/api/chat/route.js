@@ -64,9 +64,11 @@ export async function POST(req) {
             return NextResponse.json(translationResult);
         }
 
+        const cleanedResponse = responseMessage.content.replace(/<think>[\s\S]*?<\/think>/gi, '');
+
         // Return regular chat response
         return NextResponse.json({
-            response: responseMessage.content
+            response: cleanedResponse
         });
     } catch (error) {
         console.error("Chat API Error:", error);

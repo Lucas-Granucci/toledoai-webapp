@@ -33,7 +33,7 @@ export class MessageProcessor {
                 if (m.file?.text) {
                     return {
                         role: 'user',
-                        content: `${baseContent}\n[Document uploaded: Available for analysis]`
+                        content: `${baseContent}\n[Document uploaded: Available for analysis] TargetLang: ${m.file?.targetLang} if not specified by user`
                     }
                 }
 
@@ -75,7 +75,7 @@ export class MessageProcessor {
     buildSystemPrompt(hasDocument) {
         return {
             role: 'system',
-            content: `You are a multilingual scientific assistant. ${hasDocument ? 
+            content: `/no_think You are a multilingual scientific assistant. ${hasDocument ? 
                 'The user has uploaded a document that is available for analysis and translation.' : 
                 'No document is currently available.'} Use the 'translate_text' tool when translation is requested.`
         };

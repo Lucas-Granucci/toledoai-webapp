@@ -11,7 +11,6 @@ export class ChatService {
                 tools: toolsSchema,
                 tool_choice: "auto"
             });
-
             return completion;
         } catch (error) {
             console.error("Groq API Error:", error);

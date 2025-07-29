@@ -142,20 +142,20 @@ export default function Home() {
     {
       initials: 'LG',
       name: 'Lucas Granucci',
-      role: 'AI Engineer & Researcher',
-      description: 'Specializes in NLP and machine translation systems for scientific content.',
+      role: 'CS Student and NLP Technologist',
+      description: 'Focuses on developing multilingual natural language processing technologies and agentic LLM applications',
       github: 'https://github.com/Lucas-Granucci',
       linkedin: 'https://www.linkedin.com/in/lucas-granucci/',
       email: 'lucasgranucci08@gmail.com'
     },
     {
-      initials: 'CO',
+      initials: 'TD',
       name: 'Thomas Du',
-      role: 'Full-Stack Developer',
-      description: 'Focuses on user experience and building scalable web applications.',
-      github: 'https://github.com/codevusername',
-      linkedin: 'https://linkedin.com/in/codevprofile',
-      email: 'codev.email@example.com'
+      role: 'Software Engineer',
+      description: 'Works on API integration, website development, and user interface improvements. ',
+      github: 'https://github.com/Skullbasher21',
+      linkedin: 'https://linkedin.com/in/thomas-du-linked123/',
+      email: 't2016du@gmail.com'
     }
   ];
 
@@ -167,7 +167,7 @@ export default function Home() {
     {
       icon: Upload,
       title: 'Seamless Document Upload',
-      description: 'Easily upload your scientific papers in various formats, including PDF and DOCX, and let our system handle the rest.'
+      description: 'Easily upload your scientific papers and let our system handle the rest.'
     },
     {
       icon: Languages,
@@ -252,7 +252,7 @@ export default function Home() {
                 Launch Translator
               </Button>
             </div>
-            <p className="text-sm text-slate-500 mt-4">Get started instantly. PDF, DOCX, and more supported.</p>
+            <p className="text-sm text-slate-500 mt-4">Get started instantly, 100% free</p>
           </div>
         </section>
 
