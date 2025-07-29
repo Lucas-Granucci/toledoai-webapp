@@ -1,4 +1,5 @@
 import Groq from 'groq-sdk';
+import { GLOSSARY_MODEL } from '@/utils/constants';
 
 export class GlossaryService {
     async generateGlossary(translatedText, userApiKey, targetLang, sourceLang) {
@@ -12,7 +13,7 @@ export class GlossaryService {
 
         try {
             const completion = await groq.chat.completions.create({
-                model: "qwen/qwen3-32b",
+                model: GLOSSARY_MODEL,
                 messages: [{ role: 'user', content: prompt }],
             });
             const content = completion.choices[0].message.content;

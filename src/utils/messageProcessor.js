@@ -33,7 +33,7 @@ export class MessageProcessor {
                 if (m.file?.text) {
                     return {
                         role: 'user',
-                        content: `${baseContent}\n[Document uploaded: Available for analysis] TargetLang: ${m.file?.targetLang} if not specified by user`
+                        content: `${baseContent}\n [Document uploaded: Available for analysis]`
                     }
                 }
 

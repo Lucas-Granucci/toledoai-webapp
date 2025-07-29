@@ -59,7 +59,7 @@ export const MessageBubble = ({ message, onFilePreview }) => {
                     {!isUser && message.glossary && typeof message.glossary === 'string' && (
                         <div className="mb-4 mt-2 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
                         <h2 className="text-lg font-bold mb-2 text-yellow-700">Glossary</h2>
-                        <pre className="whitespace-pre-wrap text-yellow-900">{m.glossary}</pre>
+                        <pre className="whitespace-pre-wrap text-yellow-900">{message.glossary}</pre>
                         </div>
                     )}
                     </div>

@@ -1,4 +1,5 @@
 import Groq from "groq-sdk";
+import { SUMMARY_MODEL } from "@/utils/constants";
 
 export class DocumentManager {
     constructor() {
@@ -18,7 +19,7 @@ export class DocumentManager {
 
         try {
             const completion = await groq.chat.completions.create({
-                model: "qwen/qwen3-32b",
+                model: SUMMARY_MODEL,
                 messages: [{
                     role: "user",
                     content: `Create a concise summary of this document for context. Incldue key topics, main findings, and important details that might be referenced later:\n\n${text.substring(0,2000)}...`

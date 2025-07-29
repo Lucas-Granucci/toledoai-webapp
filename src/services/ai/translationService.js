@@ -1,4 +1,5 @@
 import Groq from "groq-sdk";
+import { TRANSLATION_MODEL } from "@/utils/constants";
 
 export class TranslationService {
     async translateText(text, targetLang, userApiKey) {
@@ -8,7 +9,7 @@ export class TranslationService {
 
         try {
             const completion = await groq.chat.completions.create({
-                model: "qwen/qwen3-32b",
+                model: TRANSLATION_MODEL,
                 messages: [{ role: 'user', content: prompt }],
             })
 

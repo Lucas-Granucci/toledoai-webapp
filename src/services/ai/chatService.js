@@ -1,12 +1,13 @@
 import OpenAI from "openai";
 import Groq from "groq-sdk";
+import { CHAT_MODEL } from "@/utils/constants";
 
 export class ChatService {
     async createChatCompletion(messages, userApiKey, toolsSchema = null) {
         const groq = new Groq({ apiKey: userApiKey });
         try {
             const completion = await groq.chat.completions.create({
-                model: "qwen/qwen3-32b",
+                model: CHAT_MODEL,
                 messages,
                 tools: toolsSchema,
                 tool_choice: "auto"
