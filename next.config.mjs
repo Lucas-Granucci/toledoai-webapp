@@ -14,6 +14,8 @@ const nextConfig = {
     serverComponentsExternalPackages: ['pdf-parse', 'turndown'],
   },
 
+  serverExternalPackages: ["@sparticuz/chromium", "puppeteer-core"],
+
   // For Vercel deployments (optional but recommended)
   output: process.env.VERCEL ? 'standalone' : undefined,
   

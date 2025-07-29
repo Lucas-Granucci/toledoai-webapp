@@ -27,9 +27,9 @@ export async function POST(request) {
         ...launchOptions,
         args: chromium.args,
         executablePath: await chromium.executablePath(),
-        defaultViewport: chromium.defaultViewport,
-        headless: chromium.headless,
-        ignoreHTTPSErrors: true,
+        // defaultViewport: chromium.defaultViewport,
+        // headless: chromium.headless,
+        // ignoreHTTPSErrors: true,
       };
     } else {
       puppeteer = await import('puppeteer');
