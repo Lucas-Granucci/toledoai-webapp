@@ -27,6 +27,8 @@ export const Header = ({ sourceLang, targetLang, onSettingsClick }) => {
                             {targetLang}
                         </div>
                     </div>
+
+                    {/* Clear Chat Button */}
                     <button
                         onClick={onSettingsClick}
                         className="p-2 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"

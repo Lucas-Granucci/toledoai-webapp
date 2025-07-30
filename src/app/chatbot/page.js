@@ -11,13 +11,12 @@ import { useFileUpload } from '../../hooks/useFileUpload';
 import { useApiKey } from '../../hooks/useApiKey';
 import { useSettings } from '../../hooks/useSettings';
 import { fileService } from '../../services/api';
-import { Settings } from 'lucide-react';
 
 export default function ChatbotPage() {
     const fileInputRef = useRef(null);
 
     // Custom hooks for state management
-    const { messages, isTyping, input, setInput, sendMessage } = useChat();
+    const { messages, isTyping, input, setInput, sendMessage, clearChatHistory } = useChat();
     const {
         uploadedFile,
         showFilePreview,
@@ -119,6 +118,7 @@ export default function ChatbotPage() {
                     setSourceLang={setSourceLang}
                     targetLang={targetLang}
                     setTargetLang={setTargetLang}
+                    clearChatHistory={clearChatHistory}
                 />
 
                 <FilePreviewModal 

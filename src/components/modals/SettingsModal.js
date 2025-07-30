@@ -9,7 +9,8 @@ export const SettingsModal = ({
     sourceLang,
     setSourceLang,
     targetLang,
-    setTargetLang
+    setTargetLang,
+    clearChatHistory
 }) => {
     const sourceOptions = LANGUAGES.source;
     const targetOptions = LANGUAGES.target;
@@ -48,6 +49,21 @@ export const SettingsModal = ({
                         onChange={(e) => setTargetLang(e.target.value)}
                     />
                 </div>
+            </div>
+
+            {/* Clear Chat History Button */}
+            <div className="mb-6">
+                <h3 className="text-lg font-semibold text-slate-800 mb-2">Danger Zone</h3>
+                <button
+                    onClick={() => {
+                        if (window.confirm("Are you sure you want to clear the chat history? This action cannot be undone.")) {
+                            clearChatHistory();
+                        }
+                    }}
+                    className="px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-colors cursor-pointer"
+                >
+                    Clear Chat History
+                </button>
             </div>
 
             {/* Modal Action Buttons */}
