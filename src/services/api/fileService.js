@@ -1,3 +1,5 @@
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 class FileService {
     async downloadPDF(fileText) {
         const response = await fetch('/api/download-pdf', {
@@ -18,41 +20,57 @@ class FileService {
     }
 
     async convertHTMLToPDF(htmlContent) {
-        // Option 1: Using jsPDF with html2canvas
-        // You'll need to install: npm install jspdf html2canvas
-        
-        // Create a temporary div to render the HTML
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = htmlContent;
-        tempDiv.style.position = 'absolute';
-        tempDiv.style.left = '-9999px';
-        tempDiv.style.top = '-9999px';
-        tempDiv.style.width = '210mm'; // A4 width
-        document.body.appendChild(tempDiv);
-
         try {
-            // Import libraries dynamically
-            const html2canvas = (await import('html2canvas')).default;
-            const { jsPDF } = await import('jspdf');
+            const iframe = document.createElement('iframe');
+            iframe.style.cssText = `
+                position: absolute !important;
+                top: -10000px !important;
+                left: -10000px !important;
+                width: 210mm !important;
+                height: 297mm !important;
+                border: none !important;
+                visibility: hidden !important;
+            `;
+            document.body.appendChild(iframe);
 
-            // Convert HTML to canvas
-            const canvas = await html2canvas(tempDiv, {
-                scale: 2,
-                useCORS: true,
-                allowTaint: true
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body { margin: 0; padding: 20px; width: 170mm; }
+                        * { box-sizing: border-box; }
+                    </style>
+                </head>
+                <body>${htmlContent}</body>
+                </html>
+            `);
+            iframeDoc.close();
+
+            await new Promise(resolve => {
+                iframe.onload = resolve;
+                setTimeout(resolve, 100);
             });
 
-            // Create PDF
+            const canvas = await html2canvas(iframe.contentDocument.body, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff'
+            });
+
             const imgData = canvas.toDataURL('image/png');
+            //const { jsPDF } = window.jsPDF;
             const pdf = new jsPDF('p', 'mm', 'a4');
-            const imgWidth = 210; // A4 width in mm
-            const pageHeight = 295; // A4 height in mm
+            
+            const imgWidth = 210;
+            const pageHeight = 295;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
             let heightLeft = imgHeight;
-
             let position = 0;
 
-            // Add image to PDF (handle multiple pages if needed)
             pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
             heightLeft -= pageHeight;
 
@@ -63,12 +81,10 @@ class FileService {
                 heightLeft -= pageHeight;
             }
 
-            // Download the PDF
             pdf.save('document.pdf');
-
-        } finally {
-            // Clean up
-            document.body.removeChild(tempDiv);
+            document.body.removeChild(iframe);
+        } catch (err) {
+            console.error("Error generating PDF: ", err);
         }
     }
 }
