@@ -1,3 +1,4 @@
+// ROUTE.JS
 import { NextResponse } from 'next/server';
 import { marked } from 'marked';
 
@@ -13,47 +14,17 @@ export async function POST(request) {
 
     const html = convertMarkdownToHTML(fileText);
 
-    // Determine deployment environment
-    const isVercel = !!process.env.VERCEL_ENV;
-    let puppeteer;
-    let launchOptions = {
-      headless: true,
-    };
-
-    if (isVercel) {
-      const chromium = (await import('@sparticuz/chromium')).default;
-      puppeteer = await import('puppeteer-core');
-      launchOptions = {
-        ...launchOptions,
-        args: chromium.args,
-        executablePath: await chromium.executablePath(),
-      };
-    } else {
-      puppeteer = await import('puppeteer');
-    }
-
-    browser = await puppeteer.launch(launchOptions);
-    const page = await browser.newPage();
-
-    await page.setContent(html, { waitUntil: 'networkidle2' });
-
-    const pdfBuffer = await page.pdf({
-      format: 'A4',
-      margin: { top: '10mm', right: '10mm', bottom: '10mm', left: '10mm' },
-      printBackground: true,
-    });
-
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(html, {
       headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename="document.pdf"',
+        'Content-Type': 'text/html',
+        'Content-Disposition': 'attachment; filename="document.html"',
       },
     });
 
   } catch (error) {
-    console.error('Error generating PDF:', error);
+    console.error('Error generating HTML:', error);
     return NextResponse.json(
-      { error: 'Failed to generate PDF', details: error.message },
+      { error: 'Failed to generate HTML', details: error.message },
       { status: 500 }
     );
   } finally {
